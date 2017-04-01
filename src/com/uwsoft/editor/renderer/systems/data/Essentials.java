@@ -1,9 +1,9 @@
 package com.uwsoft.editor.renderer.systems.data;
 
-import box2dLight.RayHandler;
-
 import com.badlogic.gdx.physics.box2d.World;
 import com.uwsoft.editor.renderer.resources.IResourceRetriever;
+
+import box2dLight.RayHandler;
 
 public class Essentials {
 

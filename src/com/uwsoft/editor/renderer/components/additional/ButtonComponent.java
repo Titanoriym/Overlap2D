@@ -1,7 +1,6 @@
 package com.uwsoft.editor.renderer.components.additional;
 
 import com.badlogic.ashley.core.Component;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 
 /**
@@ -15,7 +14,9 @@ public class ButtonComponent implements Component {
 
     public interface ButtonListener {
         public void touchUp();
+
         public void touchDown();
+
         public void clicked();
     }
 
@@ -32,13 +33,13 @@ public class ButtonComponent implements Component {
     }
 
     public void setTouchState(boolean isTouched) {
-        if(!this.isTouched && isTouched) {
-            for(int i = 0; i < listeners.size; i++) {
+        if (!this.isTouched && isTouched) {
+            for (int i = 0; i < listeners.size; i++) {
                 listeners.get(i).touchDown();
             }
         }
-        if(this.isTouched && !isTouched) {
-            for(int i = 0; i < listeners.size; i++) {
+        if (this.isTouched && !isTouched) {
+            for (int i = 0; i < listeners.size; i++) {
                 listeners.get(i).touchUp();
                 listeners.get(i).clicked();
             }

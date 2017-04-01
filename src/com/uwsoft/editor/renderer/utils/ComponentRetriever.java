@@ -18,15 +18,26 @@
 
 package com.uwsoft.editor.renderer.utils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
 import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
-import com.uwsoft.editor.renderer.components.*;
+import com.uwsoft.editor.renderer.components.ActionComponent;
+import com.uwsoft.editor.renderer.components.CompositeTransformComponent;
+import com.uwsoft.editor.renderer.components.DimensionsComponent;
+import com.uwsoft.editor.renderer.components.LayerMapComponent;
+import com.uwsoft.editor.renderer.components.MainItemComponent;
+import com.uwsoft.editor.renderer.components.NinePatchComponent;
+import com.uwsoft.editor.renderer.components.NodeComponent;
+import com.uwsoft.editor.renderer.components.ParentNodeComponent;
+import com.uwsoft.editor.renderer.components.PolygonComponent;
+import com.uwsoft.editor.renderer.components.ScissorComponent;
+import com.uwsoft.editor.renderer.components.ScriptComponent;
+import com.uwsoft.editor.renderer.components.ShaderComponent;
+import com.uwsoft.editor.renderer.components.TextureRegionComponent;
+import com.uwsoft.editor.renderer.components.TintComponent;
+import com.uwsoft.editor.renderer.components.TransformComponent;
+import com.uwsoft.editor.renderer.components.ViewPortComponent;
+import com.uwsoft.editor.renderer.components.ZIndexComponent;
 import com.uwsoft.editor.renderer.components.label.LabelComponent;
 import com.uwsoft.editor.renderer.components.light.LightObjectComponent;
 import com.uwsoft.editor.renderer.components.particle.ParticleComponent;
@@ -36,6 +47,11 @@ import com.uwsoft.editor.renderer.components.sprite.SpriteAnimationComponent;
 import com.uwsoft.editor.renderer.components.sprite.SpriteAnimationStateComponent;
 import com.uwsoft.editor.renderer.components.spriter.SpriterComponent;
 import com.uwsoft.editor.renderer.components.spriter.SpriterDrawerComponent;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -69,23 +85,23 @@ public class ComponentRetriever {
      * it might be a good idea to use Reflections library later to create this list from all classes in components package of runtime, all in favour?
      */
     private void init() {
-    	mappers.put(LightObjectComponent.class, ComponentMapper.getFor(LightObjectComponent.class));
-    	
-    	mappers.put(ParticleComponent.class, ComponentMapper.getFor(ParticleComponent.class));
+        mappers.put(LightObjectComponent.class, ComponentMapper.getFor(LightObjectComponent.class));
+
+        mappers.put(ParticleComponent.class, ComponentMapper.getFor(ParticleComponent.class));
 
         mappers.put(LabelComponent.class, ComponentMapper.getFor(LabelComponent.class));
 
-    	mappers.put(PolygonComponent.class, ComponentMapper.getFor(PolygonComponent.class));
-    	mappers.put(PhysicsBodyComponent.class, ComponentMapper.getFor(PhysicsBodyComponent.class));
+        mappers.put(PolygonComponent.class, ComponentMapper.getFor(PolygonComponent.class));
+        mappers.put(PhysicsBodyComponent.class, ComponentMapper.getFor(PhysicsBodyComponent.class));
         mappers.put(PhysicsBodyComponent.class, ComponentMapper.getFor(PhysicsBodyComponent.class));
 
         mappers.put(AnimationComponent.class, ComponentMapper.getFor(AnimationComponent.class));
         mappers.put(SpriteAnimationComponent.class, ComponentMapper.getFor(SpriteAnimationComponent.class));
         mappers.put(SpriteAnimationStateComponent.class, ComponentMapper.getFor(SpriteAnimationStateComponent.class));
-        
+
         mappers.put(SpriterDrawerComponent.class, ComponentMapper.getFor(SpriterDrawerComponent.class));
         mappers.put(SpriterComponent.class, ComponentMapper.getFor(SpriterComponent.class));
-        
+
         mappers.put(CompositeTransformComponent.class, ComponentMapper.getFor(CompositeTransformComponent.class));
         mappers.put(DimensionsComponent.class, ComponentMapper.getFor(DimensionsComponent.class));
         mappers.put(LayerMapComponent.class, ComponentMapper.getFor(LayerMapComponent.class));
@@ -114,7 +130,7 @@ public class ComponentRetriever {
      * @return ComponentRetriever only instance
      */
     private static synchronized ComponentRetriever self() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new ComponentRetriever();
 
             // Important to initialize during first creation, to populate mappers map
@@ -133,23 +149,23 @@ public class ComponentRetriever {
 
     /**
      * Retrieves Component of provided type from a provided entity
-     * @param entity of type Entity to retrieve component from
-     * @param type of the component
-     * @param <T>
      *
+     * @param entity of type Entity to retrieve component from
+     * @param type   of the component
+     * @param <T>
      * @return Component subclass instance
      */
     @SuppressWarnings("unchecked")
     public static <T extends Component> T get(Entity entity, Class<T> type) {
-        return (T)self().getMappers().get(type).get(entity);
+        return (T) self().getMappers().get(type).get(entity);
     }
 
 
     @SuppressWarnings("unchecked")
-    public static  Collection<Component> getComponents(Entity entity) {
+    public static Collection<Component> getComponents(Entity entity) {
         Collection<Component> components = new ArrayList<Component>();
         for (ComponentMapper<? extends Component> mapper : self().getMappers().values()) {
-            if(mapper.get(entity) != null) components.add(mapper.get(entity));
+            if (mapper.get(entity) != null) components.add(mapper.get(entity));
         }
 
         return components;

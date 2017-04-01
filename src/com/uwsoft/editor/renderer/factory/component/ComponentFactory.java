@@ -18,19 +18,29 @@
 
 package com.uwsoft.editor.renderer.factory.component;
 
-import box2dLight.RayHandler;
-
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.physics.box2d.World;
-import com.uwsoft.editor.renderer.components.*;
+import com.uwsoft.editor.renderer.components.DimensionsComponent;
+import com.uwsoft.editor.renderer.components.LayerMapComponent;
+import com.uwsoft.editor.renderer.components.MainItemComponent;
+import com.uwsoft.editor.renderer.components.NodeComponent;
+import com.uwsoft.editor.renderer.components.ParentNodeComponent;
+import com.uwsoft.editor.renderer.components.PolygonComponent;
+import com.uwsoft.editor.renderer.components.ScriptComponent;
+import com.uwsoft.editor.renderer.components.ShaderComponent;
+import com.uwsoft.editor.renderer.components.TintComponent;
+import com.uwsoft.editor.renderer.components.TransformComponent;
+import com.uwsoft.editor.renderer.components.ZIndexComponent;
 import com.uwsoft.editor.renderer.components.physics.PhysicsBodyComponent;
-import com.uwsoft.editor.renderer.systems.data.MainItemVO;
 import com.uwsoft.editor.renderer.resources.IResourceRetriever;
+import com.uwsoft.editor.renderer.systems.data.MainItemVO;
 import com.uwsoft.editor.renderer.utils.ComponentRetriever;
 
 import java.util.Arrays;
 import java.util.HashSet;
+
+import box2dLight.RayHandler;
 
 /**
  * Created by azakhary on 5/22/2015.
@@ -73,22 +83,22 @@ public abstract class ComponentFactory {
     }
 
     protected ShaderComponent createShaderComponent(Entity entity, MainItemVO vo) {
-    	if(vo.shaderName == null || vo.shaderName.isEmpty()){
-    		return null;
-    	}
-		ShaderComponent component = new ShaderComponent();
-		component.setShader(vo.shaderName, rm.getShaderProgram(vo.shaderName));
-		entity.add(component);
-		return component;
-	}
+        if (vo.shaderName == null || vo.shaderName.isEmpty()) {
+            return null;
+        }
+        ShaderComponent component = new ShaderComponent();
+        component.setShader(vo.shaderName, rm.getShaderProgram(vo.shaderName));
+        entity.add(component);
+        return component;
+    }
 
-	protected MainItemComponent createMainItemComponent(Entity entity, MainItemVO vo, int entityType) {
+    protected MainItemComponent createMainItemComponent(Entity entity, MainItemVO vo, int entityType) {
         MainItemComponent component = new MainItemComponent();
         component.customVars = vo.customVars;
         component.uniqueId = vo.uniqueId;
         component.itemIdentifier = vo.itemIdentifier;
         component.libraryLink = vo.itemName;
-        if(vo.tags != null) {
+        if (vo.tags != null) {
             component.tags = new HashSet<String>(Arrays.asList(vo.tags));
         }
         component.entityType = entityType;
@@ -106,10 +116,10 @@ public abstract class ComponentFactory {
         component.x = vo.x;
         component.y = vo.y;
 
-        if(Float.isNaN(vo.originX)) component.originX = dimensionsComponent.width/2f;
+        if (Float.isNaN(vo.originX)) component.originX = dimensionsComponent.width / 2f;
         else component.originX = vo.originX;
 
-        if(Float.isNaN(vo.originY)) component.originY = dimensionsComponent.height/2f;
+        if (Float.isNaN(vo.originY)) component.originY = dimensionsComponent.height / 2f;
         else component.originY = vo.originY;
 
         entity.add(component);
@@ -131,7 +141,7 @@ public abstract class ComponentFactory {
     protected ZIndexComponent createZIndexComponent(Entity entity, MainItemVO vo) {
         ZIndexComponent component = new ZIndexComponent();
 
-        if(vo.layerName == "" || vo.layerName == null) vo.layerName = "Default";
+        if (vo.layerName == "" || vo.layerName == null) vo.layerName = "Default";
 
         component.layerName = vo.layerName;
         component.setZIndex(vo.zIndex);
@@ -168,7 +178,7 @@ public abstract class ComponentFactory {
     }
 
     protected void createPhysicsComponents(Entity entity, MainItemVO vo) {
-        if(vo.physics == null){
+        if (vo.physics == null) {
             return;
         }
 
@@ -198,7 +208,7 @@ public abstract class ComponentFactory {
 
     protected PolygonComponent createMeshComponent(Entity entity, MainItemVO vo) {
         PolygonComponent component = new PolygonComponent();
-        if(vo.shape != null) {
+        if (vo.shape != null) {
             component.vertices = vo.shape.polygons.clone();
             entity.add(component);
 

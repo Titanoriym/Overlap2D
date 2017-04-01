@@ -18,7 +18,6 @@
 
 package com.uwsoft.editor.renderer.factory.component;
 
-import box2dLight.RayHandler;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -28,10 +27,12 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.uwsoft.editor.renderer.components.DimensionsComponent;
 import com.uwsoft.editor.renderer.components.PolygonComponent;
 import com.uwsoft.editor.renderer.components.TextureRegionComponent;
-import com.uwsoft.editor.renderer.systems.data.MainItemVO;
 import com.uwsoft.editor.renderer.factory.EntityFactory;
 import com.uwsoft.editor.renderer.resources.IResourceRetriever;
+import com.uwsoft.editor.renderer.systems.data.MainItemVO;
 import com.uwsoft.editor.renderer.utils.ComponentRetriever;
+
+import box2dLight.RayHandler;
 
 /**
  * Created by azakhary on 10/21/2015.
@@ -54,8 +55,8 @@ public class ColorPrimitiveComponentFactory extends ComponentFactory {
         DimensionsComponent dimensionsComponent = ComponentRetriever.get(entity, DimensionsComponent.class);
         PolygonComponent polygonComponent = ComponentRetriever.get(entity, PolygonComponent.class);
         dimensionsComponent.setPolygon(polygonComponent);
-        float ppwu = dimensionsComponent.width/textureRegionComponent.region.getRegionWidth();
-        textureRegionComponent.setPolygonSprite(polygonComponent, 1f/ppwu);
+        float ppwu = dimensionsComponent.width / textureRegionComponent.region.getRegionWidth();
+        textureRegionComponent.setPolygonSprite(polygonComponent, 1f / ppwu);
     }
 
     @Override

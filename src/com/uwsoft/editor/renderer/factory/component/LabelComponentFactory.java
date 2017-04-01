@@ -1,7 +1,5 @@
 package com.uwsoft.editor.renderer.factory.component;
 
-import box2dLight.RayHandler;
-
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
@@ -10,25 +8,27 @@ import com.uwsoft.editor.renderer.components.label.LabelComponent;
 import com.uwsoft.editor.renderer.factory.EntityFactory;
 import com.uwsoft.editor.renderer.resources.IResourceRetriever;
 
-public class LabelComponentFactory extends ComponentFactory{
-	
-	private static int labelDefaultSize = 12;
+import box2dLight.RayHandler;
 
-	public LabelComponentFactory(RayHandler rayHandler, World world, IResourceRetriever rm) {
-		super(rayHandler, world, rm);
-		// TODO Auto-generated constructor stub
-	}
+public class LabelComponentFactory extends ComponentFactory {
 
-	@Override
-	public void createComponents(Entity root, Entity entity, com.uwsoft.editor.renderer.systems.data.MainItemVO vo) {
-		 createCommonComponents(entity, vo, EntityFactory.LABEL_TYPE);
-		 createParentNodeComponent(root, entity);
-		 createNodeComponent(root, entity);
-		 createLabelComponent(entity, (com.uwsoft.editor.renderer.systems.data.LabelVO) vo);
-	}
+    private static int labelDefaultSize = 12;
 
-	@Override
-	protected DimensionsComponent createDimensionsComponent(Entity entity, com.uwsoft.editor.renderer.systems.data.MainItemVO vo) {
+    public LabelComponentFactory(RayHandler rayHandler, World world, IResourceRetriever rm) {
+        super(rayHandler, world, rm);
+        // TODO Auto-generated constructor stub
+    }
+
+    @Override
+    public void createComponents(Entity root, Entity entity, com.uwsoft.editor.renderer.systems.data.MainItemVO vo) {
+        createCommonComponents(entity, vo, EntityFactory.LABEL_TYPE);
+        createParentNodeComponent(root, entity);
+        createNodeComponent(root, entity);
+        createLabelComponent(entity, (com.uwsoft.editor.renderer.systems.data.LabelVO) vo);
+    }
+
+    @Override
+    protected DimensionsComponent createDimensionsComponent(Entity entity, com.uwsoft.editor.renderer.systems.data.MainItemVO vo) {
         DimensionsComponent component = new DimensionsComponent();
         component.height = ((com.uwsoft.editor.renderer.systems.data.LabelVO) vo).height;
         component.width = ((com.uwsoft.editor.renderer.systems.data.LabelVO) vo).width;
@@ -38,7 +38,7 @@ public class LabelComponentFactory extends ComponentFactory{
     }
 
     protected LabelComponent createLabelComponent(Entity entity, com.uwsoft.editor.renderer.systems.data.LabelVO vo) {
-    	LabelComponent component = new LabelComponent(vo.text, generateStyle(rm, vo.style, vo.size));
+        LabelComponent component = new LabelComponent(vo.text, generateStyle(rm, vo.style, vo.size));
         component.fontName = vo.style;
         component.fontSize = vo.size;
         component.setAlignment(vo.align);
@@ -47,13 +47,13 @@ public class LabelComponentFactory extends ComponentFactory{
         com.uwsoft.editor.renderer.systems.data.ResolutionEntryVO resolutionEntryVO = rm.getLoadedResolution();
         float multiplier = resolutionEntryVO.getMultiplier(rm.getProjectVO().originalResolution);
 
-        component.setFontScale(multiplier/projectInfoVO.pixelToWorld);
+        component.setFontScale(multiplier / projectInfoVO.pixelToWorld);
 
         entity.add(component);
         return component;
     }
-    
-    
+
+
     public static LabelStyle generateStyle(IResourceRetriever rManager, String fontName, int size) {
 
         if (size == 0) {

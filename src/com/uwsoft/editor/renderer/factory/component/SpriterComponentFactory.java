@@ -18,8 +18,6 @@
 
 package com.uwsoft.editor.renderer.factory.component;
 
-import box2dLight.RayHandler;
-
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.physics.box2d.World;
@@ -29,13 +27,15 @@ import com.brashmonkey.spriter.SCMLReader;
 import com.uwsoft.editor.renderer.components.DimensionsComponent;
 import com.uwsoft.editor.renderer.components.spriter.SpriterComponent;
 import com.uwsoft.editor.renderer.components.spriter.SpriterDrawerComponent;
-import com.uwsoft.editor.renderer.systems.data.MainItemVO;
-import com.uwsoft.editor.renderer.systems.data.SpriterVO;
 import com.uwsoft.editor.renderer.factory.EntityFactory;
 import com.uwsoft.editor.renderer.resources.IResourceRetriever;
+import com.uwsoft.editor.renderer.systems.data.MainItemVO;
+import com.uwsoft.editor.renderer.systems.data.SpriterVO;
 import com.uwsoft.editor.renderer.utils.ComponentRetriever;
 import com.uwsoft.editor.renderer.utils.LibGdxDrawer;
 import com.uwsoft.editor.renderer.utils.LibGdxLoader;
+
+import box2dLight.RayHandler;
 
 /**
  * Created by azakhary on 5/22/2015.
@@ -70,18 +70,18 @@ public class SpriterComponentFactory extends ComponentFactory {
 
     protected SpriterComponent createSpriterDataComponent(Entity entity, SpriterVO vo) {
         SpriterComponent component = new SpriterComponent();
-        component. entity = vo.entity;
+        component.entity = vo.entity;
         component.animation = vo.animation;
-        component. animationName = vo.animationName;
+        component.animationName = vo.animationName;
         component.scale = vo.scale;
 
-        FileHandle handle 	=	rm.getSCMLFile(vo.animationName);
+        FileHandle handle = rm.getSCMLFile(vo.animationName);
         component.data = new SCMLReader(handle.read()).getData();
-        LibGdxLoader loader = 	new LibGdxLoader(component.data);
+        LibGdxLoader loader = new LibGdxLoader(component.data);
         loader.load(handle.file());
 
-        component.currentAnimationIndex	=	vo.animation;
-        component.currentEntityIndex		=	vo.entity;
+        component.currentAnimationIndex = vo.animation;
+        component.currentEntityIndex = vo.entity;
 
         component.player = new Player(component.data.getEntity(component.currentEntityIndex));
 

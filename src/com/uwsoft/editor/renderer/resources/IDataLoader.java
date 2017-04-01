@@ -9,6 +9,7 @@ import com.uwsoft.editor.renderer.systems.data.SceneVO;
 public interface IDataLoader {
 
     public SceneVO loadSceneVO(String sceneName);
+
     public ProjectInfoVO loadProjectVO();
 
 }

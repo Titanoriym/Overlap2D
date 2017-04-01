@@ -18,21 +18,22 @@
 
 package com.uwsoft.editor.renderer.factory.component;
 
-import box2dLight.ConeLight;
-import box2dLight.PointLight;
-import box2dLight.RayHandler;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.World;
 import com.uwsoft.editor.renderer.components.DimensionsComponent;
 import com.uwsoft.editor.renderer.components.light.LightObjectComponent;
-import com.uwsoft.editor.renderer.systems.data.LightVO;
-import com.uwsoft.editor.renderer.systems.data.MainItemVO;
-import com.uwsoft.editor.renderer.systems.data.ProjectInfoVO;
 import com.uwsoft.editor.renderer.factory.EntityFactory;
 import com.uwsoft.editor.renderer.physics.PhysicsBodyLoader;
 import com.uwsoft.editor.renderer.resources.IResourceRetriever;
+import com.uwsoft.editor.renderer.systems.data.LightVO;
+import com.uwsoft.editor.renderer.systems.data.MainItemVO;
+import com.uwsoft.editor.renderer.systems.data.ProjectInfoVO;
+
+import box2dLight.ConeLight;
+import box2dLight.PointLight;
+import box2dLight.RayHandler;
 
 /**
  * Created by azakhary on 5/22/2015.
@@ -63,7 +64,7 @@ public class LightComponentFactory extends ComponentFactory {
     }
 
     protected LightObjectComponent createLightObjectComponent(Entity entity, LightVO vo) {
-        if(vo.softnessLength == -1f) {
+        if (vo.softnessLength == -1f) {
             vo.softnessLength = vo.distance * 0.1f * PhysicsBodyLoader.getScale();
         }
         LightObjectComponent component = new LightObjectComponent(vo.type);
@@ -80,7 +81,7 @@ public class LightComponentFactory extends ComponentFactory {
         } else {
             component.lightObject = new ConeLight(rayHandler, component.rays, Color.WHITE, 1, 0, 0, 0, 0);
         }
-        
+
         component.lightObject.setSoftnessLength(component.softnessLength);
 
         entity.add(component);

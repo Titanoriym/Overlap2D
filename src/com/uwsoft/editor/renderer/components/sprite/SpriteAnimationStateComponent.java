@@ -12,18 +12,18 @@ import java.util.regex.Pattern;
 
 public class SpriteAnimationStateComponent implements Component {
     public Array<TextureAtlas.AtlasRegion> allRegions;
-	public Animation currentAnimation;
-	public float time = 0.0f;
+    public Animation currentAnimation;
+    public float time = 0.0f;
 
-    public  boolean paused = false;
+    public boolean paused = false;
 
     public SpriteAnimationStateComponent(Array<TextureAtlas.AtlasRegion> allRegions) {
         this.allRegions = sortAndGetRegions(allRegions);
     }
-	
-	public Animation get() {
-		return currentAnimation;
-	}
+
+    public Animation get() {
+        return currentAnimation;
+    }
 
     public void set(SpriteAnimationComponent sac) {
         set(sac.frameRangeMap.get(sac.currentAnimation), sac.fps, sac.playMode);
@@ -34,7 +34,7 @@ public class SpriteAnimationStateComponent implements Component {
         for (int r = range.startFrame; r <= range.endFrame; r++) {
             textureRegions.add(allRegions.get(r));
         }
-        currentAnimation =  new Animation(1f/fps, textureRegions, playMode);
+        currentAnimation = new Animation(1f / fps, textureRegions, playMode);
         time = 0.0f;
     }
 

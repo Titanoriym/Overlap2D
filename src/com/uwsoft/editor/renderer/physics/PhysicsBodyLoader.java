@@ -3,7 +3,11 @@ package com.uwsoft.editor.renderer.physics;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 import com.uwsoft.editor.renderer.components.TransformComponent;
 import com.uwsoft.editor.renderer.components.physics.PhysicsBodyComponent;
 import com.uwsoft.editor.renderer.utils.TransformMathUtils;
@@ -24,7 +28,7 @@ public class PhysicsBodyLoader {
     }
 
     public static PhysicsBodyLoader getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new PhysicsBodyLoader();
         }
 
@@ -32,7 +36,7 @@ public class PhysicsBodyLoader {
     }
 
     public void setScaleFromPPWU(float pixelPerWU) {
-        scale = 1f/(mul*pixelPerWU);
+        scale = 1f / (mul * pixelPerWU);
     }
 
     public static float getScale() {
@@ -43,7 +47,7 @@ public class PhysicsBodyLoader {
 
         FixtureDef fixtureDef = new FixtureDef();
 
-        if(physicsComponent != null) {
+        if (physicsComponent != null) {
             fixtureDef.density = physicsComponent.density;
             fixtureDef.friction = physicsComponent.friction;
             fixtureDef.restitution = physicsComponent.restitution;
@@ -57,16 +61,16 @@ public class PhysicsBodyLoader {
 
         BodyDef bodyDef = new BodyDef();
         Vector2 sceneCoords = TransformMathUtils.localToSceneCoordinates(entity, new Vector2(0, 0));
-        bodyDef.position.set((sceneCoords.x + transformComponent.originX) * PhysicsBodyLoader.getScale() , (sceneCoords.y + transformComponent.originY)* PhysicsBodyLoader.getScale() );
+        bodyDef.position.set((sceneCoords.x + transformComponent.originX) * PhysicsBodyLoader.getScale(), (sceneCoords.y + transformComponent.originY) * PhysicsBodyLoader.getScale());
         bodyDef.angle = transformComponent.rotation * MathUtils.degreesToRadians;
 
         bodyDef.awake = physicsComponent.awake;
         bodyDef.allowSleep = physicsComponent.allowSleep;
         bodyDef.bullet = physicsComponent.bullet;
 
-        if(physicsComponent.bodyType == 0) {
+        if (physicsComponent.bodyType == 0) {
             bodyDef.type = BodyDef.BodyType.StaticBody;
-        } else if (physicsComponent.bodyType == 1){
+        } else if (physicsComponent.bodyType == 1) {
             bodyDef.type = BodyDef.BodyType.KinematicBody;
         } else {
             bodyDef.type = BodyDef.BodyType.DynamicBody;
@@ -76,25 +80,25 @@ public class PhysicsBodyLoader {
 
         PolygonShape polygonShape = new PolygonShape();
 
-        for(int i = 0; i < minPolygonData.length; i++) {
-        	float[] verts = new float[minPolygonData[i].length * 2];
-        	for(int j=0;j<verts.length;j+=2){
+        for (int i = 0; i < minPolygonData.length; i++) {
+            float[] verts = new float[minPolygonData[i].length * 2];
+            for (int j = 0; j < verts.length; j += 2) {
                 float tempX = minPolygonData[i][j / 2].x;
-                float tempY = minPolygonData[i][j/2].y;
+                float tempY = minPolygonData[i][j / 2].y;
 
-                minPolygonData[i][j/2].x -= transformComponent.originX;
-                minPolygonData[i][j/2].y -= transformComponent.originY;
+                minPolygonData[i][j / 2].x -= transformComponent.originX;
+                minPolygonData[i][j / 2].y -= transformComponent.originY;
 
-                minPolygonData[i][j/2].x *= transformComponent.scaleX;
-                minPolygonData[i][j/2].y *= transformComponent.scaleY;
+                minPolygonData[i][j / 2].x *= transformComponent.scaleX;
+                minPolygonData[i][j / 2].y *= transformComponent.scaleY;
 
-        		verts[j] = minPolygonData[i][j/2].x * scale ;
-        		verts[j+1] = minPolygonData[i][j/2].y * scale;
+                verts[j] = minPolygonData[i][j / 2].x * scale;
+                verts[j + 1] = minPolygonData[i][j / 2].y * scale;
 
                 minPolygonData[i][j / 2].x = tempX;
-                minPolygonData[i][j/2].y = tempY;
+                minPolygonData[i][j / 2].y = tempY;
 
-        	}
+            }
             polygonShape.set(verts);
             fixtureDef.shape = polygonShape;
             body.createFixture(fixtureDef);

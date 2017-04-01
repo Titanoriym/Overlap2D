@@ -18,22 +18,25 @@
 
 package com.uwsoft.editor.renderer.commons;
 
-import box2dLight.RayHandler;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.physics.box2d.World;
 import com.uwsoft.editor.renderer.factory.component.ComponentFactory;
 import com.uwsoft.editor.renderer.resources.IResourceRetriever;
 import com.uwsoft.editor.renderer.systems.render.logic.Drawable;
 
-/**
- * Created by azakhary on 7/20/2015.
- */
+import box2dLight.RayHandler;
+
 public interface IExternalItemType {
 
     public int getTypeId();
+
     public Drawable getDrawable();
+
     public IteratingSystem getSystem();
+
     public ComponentFactory getComponentFactory();
+
     public void injectMappers();
+
     public void injectDependencies(RayHandler rayHandler, World world, IResourceRetriever rm);
 }

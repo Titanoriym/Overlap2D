@@ -2,7 +2,6 @@ package com.uwsoft.editor.renderer.systems.action.logic;
 
 import com.badlogic.ashley.core.Entity;
 import com.uwsoft.editor.renderer.components.TransformComponent;
-import com.uwsoft.editor.renderer.systems.action.data.ActionData;
 import com.uwsoft.editor.renderer.systems.action.data.RotateByData;
 import com.uwsoft.editor.renderer.utils.ComponentRetriever;
 

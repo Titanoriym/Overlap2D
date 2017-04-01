@@ -1,11 +1,11 @@
 package com.uwsoft.editor.renderer.systems.data;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter.OutputType;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ProjectInfoVO {
 

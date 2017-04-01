@@ -41,7 +41,7 @@ public class CompositeActor extends Group {
     }
 
     private CompositeActor(com.uwsoft.editor.renderer.systems.data.CompositeItemVO vo, IResourceRetriever ir, BuiltItemHandler itemHandler, boolean isRoot) {
-        this.ir= ir;
+        this.ir = ir;
         this.vo = vo;
 
         pixelsPerWU = ir.getProjectVO().pixelToWorld;
@@ -55,8 +55,8 @@ public class CompositeActor extends Group {
 
     private void makeLayerMap(com.uwsoft.editor.renderer.systems.data.CompositeItemVO vo) {
         layerMap.clear();
-        for(int i = 0; i < vo.composite.layers.size(); i++) {
-            layerMap.put(vo.composite.layers.get(i).layerName,vo.composite.layers.get(i));
+        for (int i = 0; i < vo.composite.layers.size(); i++) {
+            layerMap.put(vo.composite.layers.get(i).layerName, vo.composite.layers.get(i));
         }
     }
 
@@ -68,7 +68,7 @@ public class CompositeActor extends Group {
         processZIndexes();
         recalculateSize();
 
-        if(isRoot) {
+        if (isRoot) {
             buildCoreData(this, vo);
             itemHandler.onItemBuild(this);
         }
@@ -76,18 +76,18 @@ public class CompositeActor extends Group {
 
     protected void buildComposites(ArrayList<com.uwsoft.editor.renderer.systems.data.CompositeItemVO> composites, BuiltItemHandler itemHandler) {
 
-        for(int i = 0; i < composites.size(); i++) {
-            String className   =   getClassName(composites.get(i).customVars);
+        for (int i = 0; i < composites.size(); i++) {
+            String className = getClassName(composites.get(i).customVars);
             CompositeActor actor;
-            if(className!=null){
+            if (className != null) {
                 try {
                     Class<?> c = Class.forName(className);
-                    actor   =   (CompositeActor) c.getConstructors()[0].newInstance(composites.get(i), ir, itemHandler);
-                }catch (Exception ex){
-                    actor  = new CompositeActor(composites.get(i), ir, itemHandler, false);
+                    actor = (CompositeActor) c.getConstructors()[0].newInstance(composites.get(i), ir, itemHandler);
+                } catch (Exception ex) {
+                    actor = new CompositeActor(composites.get(i), ir, itemHandler, false);
                 }
-            }else {
-                actor  = new CompositeActor(composites.get(i), ir, itemHandler, false);
+            } else {
+                actor = new CompositeActor(composites.get(i), ir, itemHandler, false);
             }
             processMain(actor, composites.get(i));
             addActor(actor);
@@ -99,9 +99,9 @@ public class CompositeActor extends Group {
     private String getClassName(String customVars) {
         CustomVariables cv = new CustomVariables();
         cv.loadFromString(customVars);
-        String className    =   cv.getStringVariable("className");
-        if(className!=null && className.equals("")){
-            className   =   null;
+        String className = cv.getStringVariable("className");
+        if (className != null && className.equals("")) {
+            className = null;
         }
         return className;
     }
@@ -112,7 +112,7 @@ public class CompositeActor extends Group {
     }
 
     protected void buildImages(ArrayList<com.uwsoft.editor.renderer.systems.data.SimpleImageVO> images, BuiltItemHandler itemHandler) {
-        for(int i = 0; i < images.size(); i++) {
+        for (int i = 0; i < images.size(); i++) {
             Image image = new Image(ir.getTextureRegion(images.get(i).imageName));
             processMain(image, images.get(i));
             addActor(image);
@@ -122,12 +122,12 @@ public class CompositeActor extends Group {
     }
 
     protected void build9PatchImages(ArrayList<com.uwsoft.editor.renderer.systems.data.Image9patchVO> patches, BuiltItemHandler itemHandler) {
-        for(int i = 0; i < patches.size(); i++) {
+        for (int i = 0; i < patches.size(); i++) {
             TextureAtlas.AtlasRegion region = (TextureAtlas.AtlasRegion) ir.getTextureRegion(patches.get(i).imageName);
             NinePatch ninePatch = new NinePatch(region, region.splits[0], region.splits[1], region.splits[2], region.splits[3]);
             Image image = new Image(ninePatch);
-            image.setWidth(patches.get(i).width*pixelsPerWU/resMultiplier);
-            image.setHeight(patches.get(i).height * pixelsPerWU/resMultiplier);
+            image.setWidth(patches.get(i).width * pixelsPerWU / resMultiplier);
+            image.setHeight(patches.get(i).height * pixelsPerWU / resMultiplier);
             processMain(image, patches.get(i));
             addActor(image);
 
@@ -136,7 +136,7 @@ public class CompositeActor extends Group {
     }
 
     protected void buildLabels(ArrayList<com.uwsoft.editor.renderer.systems.data.LabelVO> labels, BuiltItemHandler itemHandler) {
-        for(int i = 0; i < labels.size(); i++) {
+        for (int i = 0; i < labels.size(); i++) {
             Label.LabelStyle style = new Label.LabelStyle(ir.getBitmapFont(labels.get(i).style, labels.get(i).size), Color.WHITE);
             Label label = new Label(labels.get(i).text, style);
             label.setAlignment(labels.get(i).align);
@@ -155,26 +155,26 @@ public class CompositeActor extends Group {
         buildCoreData(actor, vo);
 
         //actor properties
-        actor.setPosition(vo.x * pixelsPerWU/resMultiplier, vo.y * pixelsPerWU/resMultiplier);
-        actor.setOrigin(vo.originX * pixelsPerWU/resMultiplier, vo.originY * pixelsPerWU/resMultiplier);
+        actor.setPosition(vo.x * pixelsPerWU / resMultiplier, vo.y * pixelsPerWU / resMultiplier);
+        actor.setOrigin(vo.originX * pixelsPerWU / resMultiplier, vo.originY * pixelsPerWU / resMultiplier);
         actor.setScale(vo.scaleX, vo.scaleY);
         actor.setRotation(vo.rotation);
         actor.setColor(new Color(vo.tint[0], vo.tint[1], vo.tint[2], vo.tint[3]));
 
         indexes.put(getLayerIndex(vo.layerName) + vo.zIndex, actor);
 
-        if(layerMap.get(vo.layerName).isVisible) {
+        if (layerMap.get(vo.layerName).isVisible) {
             actor.setVisible(true);
         } else {
             actor.setVisible(false);
         }
     }
 
-    protected void buildCoreData(Actor actor, com.uwsoft.editor.renderer.systems.data.MainItemVO vo){
+    protected void buildCoreData(Actor actor, com.uwsoft.editor.renderer.systems.data.MainItemVO vo) {
 
         //custom variables
         CustomVariables cv = null;
-        if(vo.customVars != null && !vo.customVars.isEmpty()) {
+        if (vo.customVars != null && !vo.customVars.isEmpty()) {
             cv = new CustomVariables();
             cv.loadFromString(vo.customVars);
         }
@@ -194,7 +194,7 @@ public class CompositeActor extends Group {
         Object[] indexArray = indexes.keySet().toArray();
         Arrays.sort(indexArray);
 
-        for(int i = 0; i < indexArray.length; i++) {
+        for (int i = 0; i < indexArray.length; i++) {
             indexes.get(indexArray[i]).setZIndex(i);
         }
     }
@@ -204,9 +204,9 @@ public class CompositeActor extends Group {
     }
 
     public Actor getItem(String id) {
-        for(Actor actor: getChildren()) {
+        for (Actor actor : getChildren()) {
             Object userObject = actor.getUserObject();
-            if(userObject != null && userObject instanceof com.uwsoft.editor.renderer.systems.data.CoreActorData
+            if (userObject != null && userObject instanceof com.uwsoft.editor.renderer.systems.data.CoreActorData
                     && (id.equals(((com.uwsoft.editor.renderer.systems.data.CoreActorData) userObject).id))) {
                 return actor;
             }
@@ -264,10 +264,10 @@ public class CompositeActor extends Group {
         final int layerIndex = getLayerIndex(layerName);
         layerMap.get(layerName).isVisible = isVisible;
 
-        for(Actor actor: getChildren()) {
+        for (Actor actor : getChildren()) {
             Object userObject = actor.getUserObject();
-            if(userObject != null && userObject instanceof com.uwsoft.editor.renderer.systems.data.CoreActorData
-                    && ((com.uwsoft.editor.renderer.systems.data.CoreActorData)userObject).layerIndex == layerIndex) {
+            if (userObject != null && userObject instanceof com.uwsoft.editor.renderer.systems.data.CoreActorData
+                    && ((com.uwsoft.editor.renderer.systems.data.CoreActorData) userObject).layerIndex == layerIndex) {
                 actor.setVisible(isVisible);
             }
         }
@@ -282,11 +282,11 @@ public class CompositeActor extends Group {
      */
     public Array<Actor> getItemsByTag(String tag) {
         Array<Actor> items = new Array<Actor>();
-        for(Actor actor: getChildren()) {
+        for (Actor actor : getChildren()) {
             Object userObject = actor.getUserObject();
-            if(userObject != null && userObject instanceof com.uwsoft.editor.renderer.systems.data.CoreActorData) {
+            if (userObject != null && userObject instanceof com.uwsoft.editor.renderer.systems.data.CoreActorData) {
                 com.uwsoft.editor.renderer.systems.data.CoreActorData data = (com.uwsoft.editor.renderer.systems.data.CoreActorData) userObject;
-                if(data.tags != null && Arrays.asList(data.tags).contains(tag))
+                if (data.tags != null && Arrays.asList(data.tags).contains(tag))
                     items.add(actor);
             }
         }
@@ -296,6 +296,7 @@ public class CompositeActor extends Group {
 
     /**
      * returns children of this actor that are on specified layer
+     *
      * @param layerName
      * @return
      */
@@ -303,16 +304,16 @@ public class CompositeActor extends Group {
         final int layerIndex = getLayerIndex(layerName);
         Array<Actor> items = new Array<Actor>();
 
-        for(Actor actor: getChildren()) {
+        for (Actor actor : getChildren()) {
             Object userObject = actor.getUserObject();
-            if(userObject != null && userObject instanceof com.uwsoft.editor.renderer.systems.data.CoreActorData
-                    && ((com.uwsoft.editor.renderer.systems.data.CoreActorData)userObject).layerIndex == layerIndex) {
+            if (userObject != null && userObject instanceof com.uwsoft.editor.renderer.systems.data.CoreActorData
+                    && ((com.uwsoft.editor.renderer.systems.data.CoreActorData) userObject).layerIndex == layerIndex) {
                 items.add(actor);
             }
         }
         return items;
     }
-    
+
     public ArrayList<IActorScript> getScripts() {
         return scripts;
     }
@@ -331,9 +332,9 @@ public class CompositeActor extends Group {
             @Override
             public void onItemBuild(Actor item) {
 
-                if(item instanceof CompositeActor) {
+                if (item instanceof CompositeActor) {
                     com.uwsoft.editor.renderer.systems.data.CoreActorData data = (com.uwsoft.editor.renderer.systems.data.CoreActorData) item.getUserObject();
-                    if(data != null && data.tags != null && Arrays.asList(data.tags).contains("button"))
+                    if (data != null && data.tags != null && Arrays.asList(data.tags).contains("button"))
                         item.addListener(new ButtonClickListener());
                 }
             }
